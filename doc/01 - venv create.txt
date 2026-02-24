@@ -1,0 +1,21 @@
+# Criando um ambiente virtual e instalando as dependências
+
+    # No terminal, dentro da pasta do projeto, rode:
+        
+        $ python3 -m venv .venv
+
+    # Isso vai criar um ambiente virtual chamado ".venv" na pasta do projeto.
+        
+        $ source .venv/bin/activate
+
+    # Agora, com o ambiente virtual ativado, instale as dependências do projeto:
+    
+        $ pip install --upgrade pip
+
+    # Instalar as dependências listadas no arquivo requirements.txt:
+
+        $ pip install -r requirements.txt
+
+# Acessando banco de dados "stepbystep"
+
+    $ psql "postgresql://postgres:postgres@db:5432/stepbystep"

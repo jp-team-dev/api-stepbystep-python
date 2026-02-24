@@ -1,0 +1,61 @@
+# Python
+__pycache__/
+*.py[cod]
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+.eggs/
+*.pyo
+*.pyd
+*.pdb
+*.log
+*.sqlite3
+*.db
+*.pot
+*.mo
+*.swp
+*.swo
+
+# VSCode/IDE
+.vscode/
+.idea/
+*.iml
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Environments
+.env
+.env.*
+.venv/
+venv/
+ENV/
+
+# Docker
+*.pid
+
+# Alembic
+alembic/versions/*.pyc
+
+# Coverage
+htmlcov/
+.coverage
+.coverage.*
+.cache
+
+# Mypy
+.mypy_cache/
+.dmypy.json
+
+# Pytest
+.pytest_cache/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Misc
+*.bak
+*.tmp

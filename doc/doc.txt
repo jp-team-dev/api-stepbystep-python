@@ -1,0 +1,7 @@
+# Dica de produtividade VSCode
+
+- Para alternar entre o editor de código e o chat Copilot sem mouse:
+  - Defina um atalho para "Copilot Chat: Focus on Chat View" (ex: Ctrl+Alt+C) em Keyboard Shortcuts.
+  - Use Ctrl+1 para voltar ao editor de código.
+
+Assim, você alterna entre chat e código só com o teclado!
