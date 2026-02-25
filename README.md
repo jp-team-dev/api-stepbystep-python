@@ -23,5 +23,14 @@ Este projeto é o backend FastAPI do StepByStep, agora em seu próprio diretóri
 
 ---
 
+## Novos recursos guiados
+
+- A API agora organiza o conteúdo em `modules` → `lessons` → `cards`, permitindo criar trilhas de aprendizagem guiadas.
+- Endpoints como `POST /learning/modules`, `GET /learning/lessons`, `GET /learning/cards?lesson_id=<id>` suportam filtros e relacionamentos.
+- Cada card pode pertencer a uma lição e fornece um `sensory_cue` para experiências sensoriais controladas.
+- O campo `sensory_focus` da entidade `Module` aceita agora uma lista com múltiplas opções de estímulo (ex: `["visual", "vocal"]`), mantendo o registro da combinação de canais.
+
+---
+
 O projeto Flutter está em `/home/hell/projects/flutter/app-stepbystep-flutter`.
 # api-stepbystep-python

@@ -1,0 +1,15 @@
+01 - Suba os containers (se já subiu, pode pular):
+
+    # REFAZ todo o fluxo, desdo o ZERO
+
+        $ make up
+        ou
+        $ docker compose up -d
+
+02 - Aplique as migrations para criar as tabelas no banco:
+
+    # Aplica apenas as migrations
+        
+        $ make migrate
+        ou
+        $ docker compose exec backend alembic upgrade head

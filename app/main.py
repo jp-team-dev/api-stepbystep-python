@@ -5,7 +5,7 @@ from .routers import content
 
 app = FastAPI(title="StepByStep API")
 
-app.include_router(content.router, prefix="/content", tags=["content"])
+app.include_router(content.router, prefix="/learning", tags=["learning"])
 
 @app.on_event("startup")
 def on_startup():

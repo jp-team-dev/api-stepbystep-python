@@ -1,7 +1,28 @@
 # Dica de produtividade VSCode
 
-- Para alternar entre o editor de código e o chat Copilot sem mouse:
-  - Defina um atalho para "Copilot Chat: Focus on Chat View" (ex: Ctrl+Alt+C) em Keyboard Shortcuts.
-  - Use Ctrl+1 para voltar ao editor de código.
+  - Para alternar entre o editor de código e o chat Copilot sem mouse:
+    - Defina um atalho para "Copilot Chat: Focus on Chat View" (ex: Ctrl+Alt+C) em Keyboard Shortcuts.
+    - Use Ctrl+1 para voltar ao editor de código.
 
-Assim, você alterna entre chat e código só com o teclado!
+  Assim, você alterna entre chat e código só com o teclado!
+
+# Evolução da API
+
+  Para evoluir a API e preparar novos recursos do app, algumas direções possíveis:
+
+  Modelo de aprendizagem guiada: crie entidades como Lesson, Module e Step, onde cada módulo agrupa cards sequenciais. Isso permite playlists temáticas, ordens customizadas e metadados sensoriais (ex: estímulo visual/visualização suave). Também expõe endpoints para listar módulos, obter passos seguintes e registrar o progresso atual do usuário ou da sessão.
+
+  Usuários e progresso: adicione autenticação (por exemplo, JWT com FastAPI Users ou Auth0) e modelos UserProfile, SessionProgress e CardFeedback. Registre quais cards foram concluídos, quanto tempo demorou e feedback suave (resposta positiva/negativa). Isso habilita dashboards no app para relembrar atividades e medir engajamento.
+
+  Conteúdos multimídia e personalização: amplie o card para suportar áudio, vídeo curto ou instruções visuais auxiliares, e crie endpoints para buscar conteúdo recomendado com base em níveis de suporte (ex: texto simples vs. narrado). Considere endpoint de “imagens sugeridas” ou “sons tranquilos” para serem baixados pelo app.
+
+  Infraestrutura e qualidade: escreva testes automatizados (pytest + TestClient) para cada rota e adicione lint/format. Configure CI (GitHub Actions) para rodar esses testes e as migrations alembic (já existem em alembic/). Isso dá confiança para liberar novos recursos do Flutter.
+
+  Integração com o Flutter: defina contratos claros com o app — por exemplo, endpoints de listagem paginada de módulos, endpoint de upload/edição via admin e webhook para notificações (caso queira usar push). Documente essas integrações no README e mantenha exemplos de payloads curl.
+
+  Qual dessas opções está mais alinhada com o que você imaginava?
+
+
+# pydentic
+
+  Estamos usando o "pydentic fastapi", se não estivermos, dá 

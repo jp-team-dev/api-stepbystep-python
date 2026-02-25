@@ -1,6 +1,8 @@
 Suba os containers (se já subiu, pode pular):
 
     $ docker compose up -d
+    ou
+    $ make up
 
 # Isso vai subir o banco de dados e o pgadmin.
 
