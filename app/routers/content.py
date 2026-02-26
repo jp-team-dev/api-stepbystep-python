@@ -3,6 +3,7 @@ from typing import List, Optional
 from fastapi import APIRouter, HTTPException, Query
 
 from ..crud import (
+    ResourceNotFoundError,
     create_card as crud_create_card,
     delete_card as crud_delete_card,
     get_card as crud_get_card,
@@ -70,7 +71,10 @@ def delete_module(module_id: int):
 
 @router.post("/lessons", response_model=LessonRead)
 def create_lesson(lesson: LessonCreate):
-    return crud_create_lesson(lesson)
+    try:
+        return crud_create_lesson(lesson)
+    except ResourceNotFoundError as exc:
+        raise HTTPException(status_code=404, detail=str(exc))
 
 
 @router.get("/lessons", response_model=List[LessonRead])
@@ -88,7 +92,10 @@ def read_lesson(lesson_id: int):
 
 @router.put("/lessons/{lesson_id}", response_model=LessonRead)
 def update_lesson(lesson_id: int, lesson: LessonUpdate):
-    updated = crud_update_lesson(lesson_id, lesson)
+    try:
+        updated = crud_update_lesson(lesson_id, lesson)
+    except ResourceNotFoundError as exc:
+        raise HTTPException(status_code=404, detail=str(exc))
     if not updated:
         raise HTTPException(status_code=404, detail="Lesson not found")
     return updated
@@ -104,7 +111,10 @@ def delete_lesson(lesson_id: int):
 
 @router.post("/cards", response_model=CardRead)
 def create_card(card: CardCreate):
-    return crud_create_card(card)
+    try:
+        return crud_create_card(card)
+    except ResourceNotFoundError as exc:
+        raise HTTPException(status_code=404, detail=str(exc))
 
 
 @router.get("/cards", response_model=List[CardRead])
@@ -122,7 +132,10 @@ def read_card(card_id: int):
 
 @router.put("/cards/{card_id}", response_model=CardRead)
 def update_card(card_id: int, card: CardUpdate):
-    updated = crud_update_card(card_id, card)
+    try:
+        updated = crud_update_card(card_id, card)
+    except ResourceNotFoundError as exc:
+        raise HTTPException(status_code=404, detail=str(exc))
     if not updated:
         raise HTTPException(status_code=404, detail="Card not found")
     return updated

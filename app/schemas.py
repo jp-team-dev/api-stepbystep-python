@@ -1,7 +1,7 @@
 from datetime import datetime
 from typing import List, Optional
 
-from pydantic import BaseModel, Field as PydanticField
+from pydantic import BaseModel, ConfigDict, Field as PydanticField, field_validator
 
 
 class CardBase(BaseModel):
@@ -15,14 +15,25 @@ class CardBase(BaseModel):
 class CardCreate(CardBase):
     lesson_id: Optional[int] = None
 
+    @field_validator("order")
+    def ensure_positive_order(cls, v):
+        if v is not None and v < 1:
+            raise ValueError("order must be greater than zero")
+        return v
+
+    @field_validator("lesson_id")
+    def ensure_lesson_id_positive(cls, value):
+        if value is not None and value < 1:
+            raise ValueError("lesson_id must be positive")
+        return value
+
 
 class CardRead(CardBase):
     id: int
     lesson_id: Optional[int] = None
     created_at: datetime
 
-    class Config:
-        orm_mode = True
+    model_config = ConfigDict(from_attributes=True)
 
 
 class CardUpdate(BaseModel):
@@ -32,6 +43,18 @@ class CardUpdate(BaseModel):
     order: Optional[int] = None
     lesson_id: Optional[int] = None
     sensory_cue: Optional[str] = None
+
+    @field_validator("order")
+    def ensure_positive_order(cls, v):
+        if v is not None and v < 1:
+            raise ValueError("order must be greater than zero")
+        return v
+
+    @field_validator("lesson_id")
+    def ensure_lesson_id_positive(cls, value):
+        if value is not None and value < 1:
+            raise ValueError("lesson_id must be positive")
+        return value
 
 
 class LessonBase(BaseModel):
@@ -44,6 +67,18 @@ class LessonBase(BaseModel):
 class LessonCreate(LessonBase):
     module_id: Optional[int] = None
 
+    @field_validator("order")
+    def ensure_positive_order(cls, v):
+        if v is not None and v < 1:
+            raise ValueError("order must be greater than zero")
+        return v
+
+    @field_validator("module_id")
+    def ensure_module_id_positive(cls, value):
+        if value is not None and value < 1:
+            raise ValueError("module_id must be positive")
+        return value
+
 
 class LessonRead(LessonBase):
     id: int
@@ -51,8 +86,7 @@ class LessonRead(LessonBase):
     created_at: datetime
     cards: List[CardRead] = []
 
-    class Config:
-        orm_mode = True
+    model_config = ConfigDict(from_attributes=True)
 
 
 class LessonUpdate(BaseModel):
@@ -61,6 +95,18 @@ class LessonUpdate(BaseModel):
     level: Optional[str] = None
     order: Optional[int] = None
     module_id: Optional[int] = None
+
+    @field_validator("order")
+    def ensure_positive_order(cls, v):
+        if v is not None and v < 1:
+            raise ValueError("order must be greater than zero")
+        return v
+
+    @field_validator("module_id")
+    def ensure_module_id_positive(cls, value):
+        if value is not None and value < 1:
+            raise ValueError("module_id must be positive")
+        return value
 
 
 class ModuleBase(BaseModel):
@@ -71,7 +117,11 @@ class ModuleBase(BaseModel):
 
 
 class ModuleCreate(ModuleBase):
-    pass
+    @field_validator("order")
+    def ensure_positive_order(cls, v):
+        if v is not None and v < 1:
+            raise ValueError("order must be greater than zero")
+        return v
 
 
 class ModuleRead(ModuleBase):
@@ -79,8 +129,7 @@ class ModuleRead(ModuleBase):
     created_at: datetime
     lessons: List[LessonRead] = []
 
-    class Config:
-        orm_mode = True
+    model_config = ConfigDict(from_attributes=True)
 
 
 class ModuleUpdate(BaseModel):
@@ -88,3 +137,9 @@ class ModuleUpdate(BaseModel):
     description: Optional[str] = None
     sensory_focus: Optional[List[str]] = None
     order: Optional[int] = None
+
+    @field_validator("order")
+    def ensure_positive_order(cls, v):
+        if v is not None and v < 1:
+            raise ValueError("order must be greater than zero")
+        return v

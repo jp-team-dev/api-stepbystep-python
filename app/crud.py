@@ -15,6 +15,10 @@ from .schemas import (
 )
 
 
+class ResourceNotFoundError(Exception):
+    """Raised when a related resource (module/lesson) is missing."""
+
+
 def create_module(module_in: ModuleCreate) -> Module:
     with Session(engine) as session:
         module = Module(**module_in.dict())
@@ -71,6 +75,12 @@ def delete_module(module_id: int):
 
 def create_lesson(lesson_in: LessonCreate) -> Lesson:
     with Session(engine) as session:
+        module_id = lesson_in.module_id
+        if module_id is not None:
+            module = session.get(Module, module_id)
+            if not module:
+                raise ResourceNotFoundError(f"module {module_id} not found")
+
         lesson = Lesson(**lesson_in.dict())
         session.add(lesson)
         session.commit()
@@ -103,6 +113,11 @@ def update_lesson(lesson_id: int, lesson_in: LessonUpdate):
         lesson = session.get(Lesson, lesson_id)
         if not lesson:
             return None
+        module_id = lesson_in.module_id
+        if module_id is not None:
+            module = session.get(Module, module_id)
+            if not module:
+                raise ResourceNotFoundError(f"module {module_id} not found")
         for key, value in lesson_in.dict(exclude_unset=True).items():
             setattr(lesson, key, value)
         session.add(lesson)
@@ -122,6 +137,12 @@ def delete_lesson(lesson_id: int):
 
 def create_card(card_in: CardCreate) -> Card:
     with Session(engine) as session:
+        lesson_id = card_in.lesson_id
+        if lesson_id is not None:
+            lesson = session.get(Lesson, lesson_id)
+            if not lesson:
+                raise ResourceNotFoundError(f"lesson {lesson_id} not found")
+
         card = Card(**card_in.dict())
         session.add(card)
         session.commit()
@@ -147,6 +168,11 @@ def update_card(card_id: int, card_in: CardUpdate):
         card = session.get(Card, card_id)
         if not card:
             return None
+        lesson_id = card_in.lesson_id
+        if lesson_id is not None:
+            lesson = session.get(Lesson, lesson_id)
+            if not lesson:
+                raise ResourceNotFoundError(f"lesson {lesson_id} not found")
         for k, v in card_in.dict(exclude_unset=True).items():
             setattr(card, k, v)
         session.add(card)

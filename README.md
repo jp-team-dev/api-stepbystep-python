@@ -29,6 +29,7 @@ Este projeto é o backend FastAPI do StepByStep, agora em seu próprio diretóri
 - Endpoints como `POST /learning/modules`, `GET /learning/lessons`, `GET /learning/cards?lesson_id=<id>` suportam filtros e relacionamentos.
 - Cada card pode pertencer a uma lição e fornece um `sensory_cue` para experiências sensoriais controladas.
 - O campo `sensory_focus` da entidade `Module` aceita agora uma lista com múltiplas opções de estímulo (ex: `["visual", "vocal"]`), mantendo o registro da combinação de canais.
+- Lessons, modules e cards usam Pydantic v2 (`ConfigDict(from_attributes=True)`) para respostas consistentes com relacionamentos carregados via SQLModel.
 
 ---
 

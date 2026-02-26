@@ -1,3 +1,45 @@
+# Atalhos
+
+
+  CTRL + '  => Terminal active, terminais ativos
+    {
+      "key": "ctrl+'",
+      "command": "workbench.action.quickOpenTerm"
+    }
+
+  CTRL + SHIFT + '  => Entra no Chat
+    {
+      "key": "ctrl+'",
+      "command": "chatgpt.sidebarView.focus"
+    }
+
+  CTRL + SHIFT + DownArrow  => Entra no Terminal
+    {
+      "key": "ctrl+shift+down",
+      "command": "editor.action.insertCursorBelow",
+      "when": "editorTextFocus"
+    }
+
+  CTRL + SHIFT + UpArrow => Entra no Código
+    {
+      "key": "ctrl+shift+up",
+      "command": "editor.action.insertCursorAbove",
+      "when": "editorTextFocus"
+    }
+
+  CTRL + SHIFT + P => Paleta de Comandos
+    {
+      "key": "ctrl+shift+p",
+      "command": "workbench.action.showCommands"
+    }
+
+  CTRL + SHIFT + T => Abre novo Terminal
+  {
+    "key": "ctrl+shift+alt+t",
+    "command": "workbench.action.terminal.chat.focusMostRecentChatTerminal",
+    "when": "inChat"
+  }
+
 # Dica de produtividade VSCode
 
   - Para alternar entre o editor de código e o chat Copilot sem mouse:
@@ -20,9 +62,39 @@
 
   Integração com o Flutter: defina contratos claros com o app — por exemplo, endpoints de listagem paginada de módulos, endpoint de upload/edição via admin e webhook para notificações (caso queira usar push). Documente essas integrações no README e mantenha exemplos de payloads curl.
 
-  Qual dessas opções está mais alinhada com o que você imaginava?
 
 
-# pydentic
+# pydantic fastapi
 
-  Estamos usando o "pydentic fastapi", se não estivermos, dá 
+# progress
+
+  Podemos sim — com o stack já atualizado (Pydantic v2 + SQLModel 0.0.33) e os schemas de cards adaptados, o próximo passo é migrar os recursos lessons e modules para o mesmo padrão ConfigDict(from_attributes=True) e validar os novos endpoints (/learning/lessons, /learning/modules).
+
+  Por onde começar
+
+  Lessons primeiro: reescreva LessonRead, LessonCreate e LessonUpdate para usar ConfigDict, adicionando qualquer validação extra que queira capturar (por exemplo, garantir order positivo ou module_id existente). Isso garante que as respostas entreguem cards preenchidos como listas em vez de strings quebradas.
+  Ajuste o CRUD/routers se necessário para que os dados sejam serializados corretamente com o novo modelo (por exemplo, garanta que LessonRead carregue selectinload(Lesson.cards) antes de retornar).
+  Depois avance para modules: adapte ModuleRead (já feito) e os payloads de criação/atualização para tirar proveito do novo config, além de revisar os serializers no FastAPI (já são os mesmos schemas).
+  Enquanto isso, mantenha documentado no README/doc/STATUS_ATUAL que cada recurso usa Pydantic v2, para que futuras alterações (autenticação, progresso) sigam o mesmo padrão. Se quiser, posso ajudar com um patch para os schemas de lesson em seguida. Quer que eu comece por ali?
+
+
+Antes dos testes, só pra eu não ter dúvidas, todos os resursos envolvendo cards, lessons e modules, já se encontrar todos preparados certo?
+
+Antes dos testes eu queria trabalhar no app Flutter, o que acha?
+
+http://localhost:8000/learning/modules
+todos os endpoints "modules" funcionando perfeitamente
+todas as mensagens validações "responsse body" sendo exibidas corretamente
+
+http://localhost:8000/learning/lessons?module_id=1
+todos os endpoints "lessons" funcionando perfeitamente
+todas as mensagens validações "responsse body" sendo exibidas corretamente
+
+http://localhost:8000/learning/cards?lesson_id=1
+todos os endpoints "cards" funcionando perfeitamente
+todas as mensagens validações "responsse body" sendo exibidas corretamente
+
+Próximos passos
+
+Escrever testes automatizados (pytest + TestClient) que criam/manipulam módulos, lições e cards cobrindo erros de validação (order/module_id inválidos).
+Planejar os próximos recursos na lista (usuários/progresso, multimídia, integrações) mantendo o mesmo padrão Pydantic v2 e documentação atualizada.

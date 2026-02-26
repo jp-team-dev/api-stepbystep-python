@@ -2,14 +2,20 @@
 
     # REFAZ todo o fluxo, desdo o ZERO
 
-        $ make up
-        ou
-        $ docker compose up -d
+        # Perfeito, "$ make up" já preparou tudo (rebuild + up), então não precisa rerun nenhum dos outros comandos a menos que mude o "Dockerfile/dependências" novamente.
+
+            $ make up
+            $ make up --build
+            ou
+            $ docker compose up -d
+            $ docker compose build backend
 
 02 - Aplique as migrations para criar as tabelas no banco:
 
     # Aplica apenas as migrations
-        
-        $ make migrate
-        ou
-        $ docker compose exec backend alembic upgrade head
+
+        # Se for aplicar "migrations" daqui pra frente, basta rodar "$ make migrate" agora que o serviço está rodando; para reiniciar só o "backend" depois de mudanças de código, "$ docker compose up -d" já basta.
+            
+            $ make migrate
+            ou
+            $ docker compose exec backend alembic upgrade head
