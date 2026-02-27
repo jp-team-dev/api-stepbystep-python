@@ -8,6 +8,8 @@
 - Migração Alembic `0002_add_guided_models` criada para novas tabelas e colunas (`lesson_id`, `sensory_cue`).
 - O campo `sensory_focus` dos módulos agora pode receber múltiplos itens, então os payloads podem enviar listas de estímulos sensoriais, como `["visual", "vocal"]`.
 - Lessons, modules e cards agora usam `Pydantic v2` com `ConfigDict(from_attributes=True)` para garantir a serilaização correta dos objetos relacionados.
+- Criado `Makefile test` que garante um virtualenv isolado (`.venv-test`) e roda `python -m pytest` contra o mesmo banco PostgreSQL da aplicação (arrays exigem Postgres); manter o serviço (`make up` ou `docker compose up -d db`) é pré-requisito.
+- Documentado no README o processo de clonar `stepbystep` → `stepbystep_test` via pgAdmin ou CLI (`createdb -T` / `pg_dump | psql`) e destacada a nova variável `DATABASE_URL` apontando para o clone nos testes.
 
 ## Próximos passos recomendados
 1. Rodar `make migrate` ou `bash scripts/03-run_migrations.sh` para aplicar `0002_add_guided_models`.

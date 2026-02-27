@@ -1,0 +1,4 @@
+01 - Run python files
+
+    $ python app/test_learning_api.py
+    $ PYTHONPATH="$(pwd)" python3 -m pytest app/test_learning_api.py

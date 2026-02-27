@@ -48,53 +48,18 @@
 
   Assim, você alterna entre chat e código só com o teclado!
 
-# Evolução da API
+# Teste feitos via "Swagger UI"
 
-  Para evoluir a API e preparar novos recursos do app, algumas direções possíveis:
+  http://localhost:8000/docs#/
 
-  Modelo de aprendizagem guiada: crie entidades como Lesson, Module e Step, onde cada módulo agrupa cards sequenciais. Isso permite playlists temáticas, ordens customizadas e metadados sensoriais (ex: estímulo visual/visualização suave). Também expõe endpoints para listar módulos, obter passos seguintes e registrar o progresso atual do usuário ou da sessão.
+  http://localhost:8000/learning/modules
+  todos os endpoints "modules" funcionando perfeitamente
+  todas as mensagens validações "responsse body" sendo exibidas corretamente
 
-  Usuários e progresso: adicione autenticação (por exemplo, JWT com FastAPI Users ou Auth0) e modelos UserProfile, SessionProgress e CardFeedback. Registre quais cards foram concluídos, quanto tempo demorou e feedback suave (resposta positiva/negativa). Isso habilita dashboards no app para relembrar atividades e medir engajamento.
+  http://localhost:8000/learning/lessons?module_id=1
+  todos os endpoints "lessons" funcionando perfeitamente
+  todas as mensagens validações "responsse body" sendo exibidas corretamente
 
-  Conteúdos multimídia e personalização: amplie o card para suportar áudio, vídeo curto ou instruções visuais auxiliares, e crie endpoints para buscar conteúdo recomendado com base em níveis de suporte (ex: texto simples vs. narrado). Considere endpoint de “imagens sugeridas” ou “sons tranquilos” para serem baixados pelo app.
-
-  Infraestrutura e qualidade: escreva testes automatizados (pytest + TestClient) para cada rota e adicione lint/format. Configure CI (GitHub Actions) para rodar esses testes e as migrations alembic (já existem em alembic/). Isso dá confiança para liberar novos recursos do Flutter.
-
-  Integração com o Flutter: defina contratos claros com o app — por exemplo, endpoints de listagem paginada de módulos, endpoint de upload/edição via admin e webhook para notificações (caso queira usar push). Documente essas integrações no README e mantenha exemplos de payloads curl.
-
-
-
-# pydantic fastapi
-
-# progress
-
-  Podemos sim — com o stack já atualizado (Pydantic v2 + SQLModel 0.0.33) e os schemas de cards adaptados, o próximo passo é migrar os recursos lessons e modules para o mesmo padrão ConfigDict(from_attributes=True) e validar os novos endpoints (/learning/lessons, /learning/modules).
-
-  Por onde começar
-
-  Lessons primeiro: reescreva LessonRead, LessonCreate e LessonUpdate para usar ConfigDict, adicionando qualquer validação extra que queira capturar (por exemplo, garantir order positivo ou module_id existente). Isso garante que as respostas entreguem cards preenchidos como listas em vez de strings quebradas.
-  Ajuste o CRUD/routers se necessário para que os dados sejam serializados corretamente com o novo modelo (por exemplo, garanta que LessonRead carregue selectinload(Lesson.cards) antes de retornar).
-  Depois avance para modules: adapte ModuleRead (já feito) e os payloads de criação/atualização para tirar proveito do novo config, além de revisar os serializers no FastAPI (já são os mesmos schemas).
-  Enquanto isso, mantenha documentado no README/doc/STATUS_ATUAL que cada recurso usa Pydantic v2, para que futuras alterações (autenticação, progresso) sigam o mesmo padrão. Se quiser, posso ajudar com um patch para os schemas de lesson em seguida. Quer que eu comece por ali?
-
-
-Antes dos testes, só pra eu não ter dúvidas, todos os resursos envolvendo cards, lessons e modules, já se encontrar todos preparados certo?
-
-Antes dos testes eu queria trabalhar no app Flutter, o que acha?
-
-http://localhost:8000/learning/modules
-todos os endpoints "modules" funcionando perfeitamente
-todas as mensagens validações "responsse body" sendo exibidas corretamente
-
-http://localhost:8000/learning/lessons?module_id=1
-todos os endpoints "lessons" funcionando perfeitamente
-todas as mensagens validações "responsse body" sendo exibidas corretamente
-
-http://localhost:8000/learning/cards?lesson_id=1
-todos os endpoints "cards" funcionando perfeitamente
-todas as mensagens validações "responsse body" sendo exibidas corretamente
-
-Próximos passos
-
-Escrever testes automatizados (pytest + TestClient) que criam/manipulam módulos, lições e cards cobrindo erros de validação (order/module_id inválidos).
-Planejar os próximos recursos na lista (usuários/progresso, multimídia, integrações) mantendo o mesmo padrão Pydantic v2 e documentação atualizada.
+  http://localhost:8000/learning/cards?lesson_id=1
+  todos os endpoints "cards" funcionando perfeitamente
+  todas as mensagens validações "responsse body" sendo exibidas corretamente

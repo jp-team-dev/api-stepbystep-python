@@ -21,7 +21,7 @@ class ResourceNotFoundError(Exception):
 
 def create_module(module_in: ModuleCreate) -> Module:
     with Session(engine) as session:
-        module = Module(**module_in.dict())
+        module = Module(**module_in.model_dump())
         session.add(module)
         session.commit()
         module_id = module.id
@@ -56,7 +56,7 @@ def update_module(module_id: int, module_in: ModuleUpdate):
         module = session.get(Module, module_id)
         if not module:
             return None
-        for key, value in module_in.dict(exclude_unset=True).items():
+        for key, value in module_in.model_dump(exclude_unset=True).items():
             setattr(module, key, value)
         session.add(module)
         session.commit()
@@ -81,7 +81,7 @@ def create_lesson(lesson_in: LessonCreate) -> Lesson:
             if not module:
                 raise ResourceNotFoundError(f"module {module_id} not found")
 
-        lesson = Lesson(**lesson_in.dict())
+        lesson = Lesson(**lesson_in.model_dump())
         session.add(lesson)
         session.commit()
         lesson_id = lesson.id
@@ -118,7 +118,7 @@ def update_lesson(lesson_id: int, lesson_in: LessonUpdate):
             module = session.get(Module, module_id)
             if not module:
                 raise ResourceNotFoundError(f"module {module_id} not found")
-        for key, value in lesson_in.dict(exclude_unset=True).items():
+        for key, value in lesson_in.model_dump(exclude_unset=True).items():
             setattr(lesson, key, value)
         session.add(lesson)
         session.commit()
@@ -143,7 +143,7 @@ def create_card(card_in: CardCreate) -> Card:
             if not lesson:
                 raise ResourceNotFoundError(f"lesson {lesson_id} not found")
 
-        card = Card(**card_in.dict())
+        card = Card(**card_in.model_dump())
         session.add(card)
         session.commit()
         session.refresh(card)

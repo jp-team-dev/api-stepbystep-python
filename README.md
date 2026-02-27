@@ -34,4 +34,25 @@ Este projeto é o backend FastAPI do StepByStep, agora em seu próprio diretóri
 ---
 
 O projeto Flutter está em `/home/hell/projects/flutter/app-stepbystep-flutter`.
+# Testes automatizados
+
+- Antes de rodar `make test`, suba o banco PostgreSQL (`make up` ou `docker compose up -d db`) para que `TEST_DATABASE_URL` (default `postgresql://postgres:postgres@localhost:5432/stepbystep_test`) esteja pronto.
+- Como os testes usam o clone `stepbystep_test`, mantenha esse banco atualizado copiando a estrutura/dados do banco principal:
+  1. Pelo **pgAdmin**: faça backup de `stepbystep`, crie `stepbystep_test` e restaure o `.backup/.sql`.
+  2. Pela linha de comando: `createdb -T stepbystep stepbystep_test` (ou `pg_dump stepbystep | psql stepbystep_test`).
+- O alvo `make test` cria `.venv-test`, instala as dependências e executa `PYTHONPATH=$(PWD) python -m pytest app/test_learning_api.py`.
+- Os testes usam PostgreSQL porque o schema depende de arrays (`sensory_focus`), então o SQLite falhava com `visit_ARRAY`. Dessa forma eles usam o mesmo banco usado pela API.
+
+# Ambientes Python
+
+- Use `.venv` para desenvolvimento normal e `.venv-test` apenas para executar os testes automatizados.
+- No VS Code, selecione o interpretador `.../api-stepbystep-python/.venv-test/bin/python3` (Paleta > *Python: Select Interpreter*) quando for abrir `app/test_learning_api.py` ou qualquer arquivo de teste para garantir que o editor reconhece `pytest` e as dependências instaladas naquele ambiente.
+- O `Makefile` já injeta `TEST_DATABASE_URL` no alvo `test` e imprime qual valor está em uso, mas se houver outro terminal configurado com `TEST_DATABASE_URL` diferente, o `@echo` mostra isso logo no início da execução.
+
+# PyCharm
+
+- Ao abrir o projeto no PyCharm, configure o intérprete do projeto com o mesmo `.venv` ou `.venv-test` usado no terminal. Isso evita falso-positivos nos imports e permite rodar os testes direto pela IDE.
+- Após apontar o intérprete correto, habilite o Codex Chat IA (se disponível) para ter acesso ao mesmo histórico de suporte, mas lembre que esta conversa permanece registrada neste Codex CLI, então cole trechos úteis em notas do PyCharm se precisar.
+- Para a suíte de testes integrados no PyCharm, defina `TEST_DATABASE_URL` na configuração de execução (Run Configuration > Environment variables) igual a `postgresql://postgres:198870@localhost:5433/stepbystep_test`, e garanta que o serviço `docker compose up -d db` esteja rodando com a porta 5433 aberta.
+
 # api-stepbystep-python
